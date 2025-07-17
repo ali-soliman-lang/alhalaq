@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import timeRoutes from "./routes/timeRoutes";
 import reservationRoutes from "./routes/reservationRoutes";
+import globalErrorHandler from "./middleware/globalErrorHandler";
 
 // Load env vars
 dotenv.config();
@@ -28,6 +29,8 @@ app.use("/api/v1/reservations", reservationRoutes);
 app.get("/", (_: Request, res: Response) => {
   res.json({ message: "Welcome to Smart Doctor API" });
 });
+
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 
