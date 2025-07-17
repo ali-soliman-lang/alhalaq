@@ -10,8 +10,8 @@ import {
 const router = express.Router();
 
 router
-  .get("/", getAllTimes)
   .post("/", createTime)
+  .get("/", getAllTimes)
   .get("/:id", getTimeById)
   .put("/:id", updateTime)
   .delete("/:id", deleteTime);
