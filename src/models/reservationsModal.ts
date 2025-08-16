@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Query, Schema } from "mongoose";
 
 const ReservationsSchema = new Schema({
   name: {
@@ -14,6 +14,11 @@ const ReservationsSchema = new Schema({
     ref: "Time",
     unique: true,
   },
+});
+
+ReservationsSchema.pre<Query<any, any>>(/^find/, function (next) {
+  this.populate({ path: "time" });
+  next();
 });
 
 export default mongoose.model("Reservations", ReservationsSchema);

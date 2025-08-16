@@ -46,14 +46,15 @@ export default (err: any, _req: any, res: Response, _next: any) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   sendErrorDev(err, res);
-  // }
-  let error = { ...err };
+  if (process.env.NODE_ENV !== "production") {
+    sendErrorDev(err, res);
+  } else if (process.env.NODE_ENV === "production") {
+    let error = { ...err };
 
-  if (error.name === "_id") error = handleCastErrorDB(error);
-  if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-  if (error._message === "Validation failed")
-    error = handleValidationErrorDB(error);
-  sendErrorPro(error, res);
+    if (error.name === "_id") error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error._message === "Validation failed")
+      error = handleValidationErrorDB(error);
+    sendErrorPro(error, res);
+  }
 };

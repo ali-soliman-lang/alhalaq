@@ -5,7 +5,7 @@ import AppError from "../utils/appError";
 
 export const getAllTimes = catchAsync(
   async (_: Request, res: Response): Promise<Response> => {
-    const times = await Time.find();
+    const times = await Time.find().populate("reservations");
     return res.status(200).json({
       message: "Times retrieved successfully",
       data: times,
@@ -26,6 +26,7 @@ export const createTime = catchAsync(
 export const getTimeById = catchAsync(
   async (req: Request, res: Response): Promise<Response> => {
     const time = await Time.findById(req.params.id);
+    await time?.populate("reservations");
 
     if (!time) {
       throw new AppError("Time not found", 404);

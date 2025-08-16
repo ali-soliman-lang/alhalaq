@@ -17,7 +17,7 @@ export const createReservation = catchAsync(
 
 export const getReservations = catchAsync(
   async (_: Request, res: Response): Promise<Response> => {
-    const reservations = await Reservations.find().populate("time");
+    const reservations = await Reservations.find();
     return res.status(200).json({
       message: "Reservations retrieved successfully",
       data: reservations,
@@ -27,9 +27,7 @@ export const getReservations = catchAsync(
 
 export const getReservationById = catchAsync(
   async (req: Request, res: Response): Promise<Response> => {
-    const reservation = await Reservations.findById(req.params.id).populate(
-      "time"
-    );
+    const reservation = await Reservations.findById(req.params.id);
 
     if (!reservation) {
       throw new AppError("Reservation not found", 404);
