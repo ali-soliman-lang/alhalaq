@@ -7,18 +7,17 @@ export const createReservation = catchAsync(
   async (req: Request, res: Response): Promise<Response> => {
     const reservations = await Reservations.find({ time: req.body.time });
 
-    console.log(reservations);
-
-    if (reservations.length > 2) {
+    if (reservations.length >= 2) {
       return res.status(400).json({
         message: "This time not available",
       });
     }
-    // const reservation = await Reservations.create(req.body);
-    // await reservation.populate("time");
+    const reservation = await Reservations.create(req.body);
+    await reservation.populate("time");
+
     return res.status(201).json({
       message: "Reservation created successfully",
-      // data: reservation,
+      data: reservation,
     });
   }
 );
