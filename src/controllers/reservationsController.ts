@@ -1,17 +1,26 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 import Reservations from "../models/reservationsModal";
 import AppError from "../utils/appError";
 
+export const checkTime = catchAsync(async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const reservations = await Reservations.find({ time: req.body.time });
+
+  if (reservations.length >= 2) {
+    return res.status(400).json({
+      message: "This time not available",
+    });
+  }
+
+  next();
+});
+
 export const createReservation = catchAsync(
   async (req: Request, res: Response): Promise<Response> => {
-    const reservations = await Reservations.find({ time: req.body.time });
-
-    if (reservations.length >= 2) {
-      return res.status(400).json({
-        message: "This time not available",
-      });
-    }
     const reservation = await Reservations.create(req.body);
     await reservation.populate("time");
 
