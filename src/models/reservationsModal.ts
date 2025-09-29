@@ -12,7 +12,7 @@ const ReservationsSchema = new Schema({
   time: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Time",
-    unique: false,
+    unique: true,
   },
 });
 
