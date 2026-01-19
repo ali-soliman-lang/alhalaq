@@ -6,7 +6,7 @@ import authRoutes from "./routes/authRoutes";
 import timeRoutes from "./routes/timeRoutes";
 import reservationRoutes from "./routes/reservationRoutes";
 import globalErrorHandler from "./middleware/globalErrorHandler";
-
+import barberRoutes from "./routes/barberRoutes";
 // Load env vars
 dotenv.config();
 
@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRoutes);
 app.use("/api/v1/time", timeRoutes);
 app.use("/api/v1/reservations", reservationRoutes);
+app.use("/api/v1/barbers", barberRoutes);
 
 // Home route
 app.get("/", (_: Request, res: Response) => {

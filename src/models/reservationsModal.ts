@@ -14,10 +14,17 @@ const ReservationsSchema = new Schema({
     ref: "Time",
     unique: true,
   },
+  barber: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Barber",
+    required: true,
+    unique: true,
+  },
 });
 
 ReservationsSchema.pre<Query<any, any>>(/^find/, function (next) {
   this.populate({ path: "time" });
+  this.populate({ path: "barber" });
   next();
 });
 
