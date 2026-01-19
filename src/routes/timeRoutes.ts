@@ -6,14 +6,15 @@ import {
   updateTime,
   deleteTime,
 } from "../controllers/timeController";
+import { checkDuplicateTime } from "../middleware/checkDuplicateTime";
 
 const router = express.Router();
 
 router
-  .post("/", createTime)
+  .post("/", checkDuplicateTime, createTime)
   .get("/", getAllTimes)
   .get("/:id", getTimeById)
-  .put("/:id", updateTime)
+  .put("/:id", checkDuplicateTime, updateTime)
   .delete("/:id", deleteTime);
 
 export default router;

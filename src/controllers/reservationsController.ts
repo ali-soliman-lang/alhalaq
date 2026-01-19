@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 import Reservations from "../models/reservationsModal";
 import AppError from "../utils/appError";
+import APIFeatures from "../utils/apiFeatures";
 
 export const checkTime = catchAsync(async function (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const reservations = await Reservations.find({ time: req.body.time });
 
@@ -23,22 +24,31 @@ export const createReservation = catchAsync(
   async (req: Request, res: Response): Promise<Response> => {
     const reservation = await Reservations.create(req.body);
     await reservation.populate("time");
+    await reservation.populate("barber");
 
     return res.status(201).json({
       message: "Reservation created successfully",
       data: reservation,
     });
-  }
+  },
 );
 
 export const getReservations = catchAsync(
-  async (_: Request, res: Response): Promise<Response> => {
-    const reservations = await Reservations.find();
+  async (req: Request, res: Response): Promise<Response> => {
+    // const reservations = await Reservations.find();
+
+    const featureReservations = new APIFeatures(
+      Reservations.find(),
+      req.query,
+    ).filter();
+
+    const reservations = await featureReservations.query;
+
     return res.status(200).json({
       message: "Reservations retrieved successfully",
       data: reservations,
     });
-  }
+  },
 );
 
 export const getReservationById = catchAsync(
@@ -53,7 +63,7 @@ export const getReservationById = catchAsync(
       message: "Reservation retrieved successfully",
       data: reservation,
     });
-  }
+  },
 );
 
 export const updateReservation = catchAsync(
@@ -63,13 +73,13 @@ export const updateReservation = catchAsync(
       req.body,
       {
         new: true,
-      }
+      },
     ).populate("time");
     return res.status(200).json({
       message: "Reservation updated successfully",
       data: reservation,
     });
-  }
+  },
 );
 
 export const deleteReservation = catchAsync(
@@ -78,5 +88,5 @@ export const deleteReservation = catchAsync(
     return res
       .status(200)
       .json({ message: "Reservation deleted successfully" });
-  }
+  },
 );
