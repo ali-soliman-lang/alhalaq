@@ -48,6 +48,17 @@ const ReservationsSchema = new mongoose_1.Schema({
         ref: "Time",
         unique: true,
     },
+    barber: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Barber",
+        required: true,
+        unique: true,
+    },
+});
+ReservationsSchema.pre(/^find/, function (next) {
+    this.populate({ path: "time" });
+    this.populate({ path: "barber" });
+    next();
 });
 exports.default = mongoose_1.default.model("Reservations", ReservationsSchema);
 //# sourceMappingURL=reservationsModal.js.map

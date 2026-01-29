@@ -7,8 +7,11 @@ exports.deleteTime = exports.updateTime = exports.getTimeById = exports.createTi
 const timeModal_1 = __importDefault(require("../models/timeModal"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const appError_1 = __importDefault(require("../utils/appError"));
-exports.getAllTimes = (0, catchAsync_1.default)(async (_, res) => {
-    const times = await timeModal_1.default.find();
+const apiFeatures_1 = __importDefault(require("../utils/apiFeatures"));
+exports.getAllTimes = (0, catchAsync_1.default)(async (req, res) => {
+    // const times = await Time.find();
+    const getTimesWithId = new apiFeatures_1.default(timeModal_1.default.find(), req.query).filter();
+    const times = await getTimesWithId.query;
     return res.status(200).json({
         message: "Times retrieved successfully",
         data: times,
@@ -16,6 +19,7 @@ exports.getAllTimes = (0, catchAsync_1.default)(async (_, res) => {
 });
 exports.createTime = (0, catchAsync_1.default)(async (req, res) => {
     const time = await timeModal_1.default.create(req.body);
+    await time.populate("barber");
     return res.status(201).json({
         message: "Time created successfully",
         data: time,
