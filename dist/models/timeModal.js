@@ -38,13 +38,33 @@ const timeSchema = new mongoose_1.Schema({
     from_time: {
         type: String,
         required: true,
-        unique: true,
     },
     to_time: {
         type: String,
         required: true,
-        unique: true,
     },
+    reservations: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "Reservations",
+        },
+    ],
+    barber: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Barber",
+        required: true,
+    },
+});
+timeSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "reservations",
+        select: "-__v",
+    });
+    this.populate({
+        path: "barber",
+        select: "-__v",
+    });
+    next();
 });
 exports.default = mongoose_1.default.model("Time", timeSchema);
 //# sourceMappingURL=timeModal.js.map

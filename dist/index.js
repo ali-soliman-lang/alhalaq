@@ -10,6 +10,8 @@ const db_1 = __importDefault(require("./config/db"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const timeRoutes_1 = __importDefault(require("./routes/timeRoutes"));
 const reservationRoutes_1 = __importDefault(require("./routes/reservationRoutes"));
+const globalErrorHandler_1 = __importDefault(require("./middleware/globalErrorHandler"));
+const barberRoutes_1 = __importDefault(require("./routes/barberRoutes"));
 // Load env vars
 dotenv_1.default.config();
 // Connect to database
@@ -23,10 +25,12 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api/v1/time", timeRoutes_1.default);
 app.use("/api/v1/reservations", reservationRoutes_1.default);
+app.use("/api/v1/barbers", barberRoutes_1.default);
 // Home route
 app.get("/", (_, res) => {
     res.json({ message: "Welcome to Smart Doctor API" });
 });
+app.use(globalErrorHandler_1.default);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
