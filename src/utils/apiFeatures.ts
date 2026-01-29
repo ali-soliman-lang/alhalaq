@@ -1,13 +1,26 @@
+import { Query } from "mongoose";
+
+interface QueryString {
+  page?: string;
+  sort?: string;
+  limit?: string;
+  fields?: string;
+  [key: string]: any;
+}
+
 class APIFeatures {
-  constructor(query, queryString) {
+  query: Query<any, any>;
+  queryString: QueryString;
+
+  constructor(query: Query<any, any>, queryString: QueryString) {
     this.query = query;
     this.queryString = queryString;
   }
 
   filter() {
     const queryObj = { ...this.queryString };
-    const excludedFields = ["page", "sort", "limit", "fields"];
-    excludedFields.forEach((el) => delete queryObj[el]);
+    // const excludedFields = ["barber"];
+    // excludedFields.forEach((el) => delete queryObj[el]);
 
     // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj);
@@ -41,8 +54,8 @@ class APIFeatures {
   }
 
   paginate() {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 100;
+    const page = (this.queryString.page as any) * 1 || 1;
+    const limit = (this.queryString.limit as any) * 1 || 100;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);
