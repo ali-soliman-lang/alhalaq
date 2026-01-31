@@ -14,7 +14,7 @@ router
   .post("/", checkDuplicateTime, createTime)
   .get("/", getAllTimes)
   .get("/:id", getTimeById)
-  .put("/:id", checkDuplicateTime, updateTime)
+  .patch("/:id", checkDuplicateTime, updateTime)
   .delete("/:id", deleteTime);
 
 export default router;
