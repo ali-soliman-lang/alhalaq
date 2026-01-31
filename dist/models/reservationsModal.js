@@ -52,7 +52,6 @@ const ReservationsSchema = new mongoose_1.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Barber",
         required: true,
-        unique: true,
     },
 });
 ReservationsSchema.pre(/^find/, function (next) {

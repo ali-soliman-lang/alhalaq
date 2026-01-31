@@ -18,7 +18,6 @@ const ReservationsSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Barber",
     required: true,
-    unique: true,
   },
 });
 

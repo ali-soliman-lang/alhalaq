@@ -11,7 +11,7 @@ router
     .post("/", checkDuplicateTime_1.checkDuplicateTime, timeController_1.createTime)
     .get("/", timeController_1.getAllTimes)
     .get("/:id", timeController_1.getTimeById)
-    .put("/:id", checkDuplicateTime_1.checkDuplicateTime, timeController_1.updateTime)
+    .patch("/:id", checkDuplicateTime_1.checkDuplicateTime, timeController_1.updateTime)
     .delete("/:id", timeController_1.deleteTime);
 exports.default = router;
 //# sourceMappingURL=timeRoutes.js.map
